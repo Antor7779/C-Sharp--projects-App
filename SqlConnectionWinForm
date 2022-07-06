@@ -1,0 +1,40 @@
+using System.Data.SqlClient;
+//this is a demo connection which can be used and modified easily
+namespace Sql_Connection
+{
+    public partial class Form1 : Form
+    {
+        
+        public static string setDataForName = "";
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+           
+        }
+
+       public string conString = "Data Source=DEADSOUL\\SQLEXPRESS;Initial Catalog=People_info;Integrated Security=True";
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            
+           SqlConnection con=new SqlConnection(conString);
+            con.Open();
+
+            if(con.State==System.Data.ConnectionState.Open)
+            {
+                string q = "insert into Log_in(id,Name,Password)values( '"+txtId.Text.ToString()+"',  '"+ txtName.Text.ToString() + "','" + txtPass.Text.ToString() + "')";
+            SqlCommand cmd=new SqlCommand(q,con);
+             
+                MessageBox.Show("Connection was made successfulyy..");
+                cmd.ExecuteNonQuery();
+            }
+           
+            Form2 frm2 = new Form2();
+            frm2.Show();
+        }
+    }
+}
