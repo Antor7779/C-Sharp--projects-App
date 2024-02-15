@@ -28,6 +28,9 @@ namespace FileExplorerApp
 
             // Allow the user to rearrange columns
             listView1.AllowColumnReorder = true;
+
+            // Subscribe to the SelectedIndexChanged event for listBox2
+            listBox2.SelectedIndexChanged += listBox2_SelectedIndexChanged;
         }
 
         private void buttonBrowseFolder_Click(object sender, EventArgs e)
@@ -148,7 +151,9 @@ namespace FileExplorerApp
             try
             {
                 // Get all file paths in the selected folder
-                string[] files = Directory.GetFiles(folderPath);
+                string[] files = Directory.GetFileSystemEntries(folderPath);
+                // PopulateListBox2 lt = new PopulateListBox2;
+                //string[] files =Directory.GetFiles(PopulateListBox2);
 
                 foreach (string file in files)
                 {
@@ -160,6 +165,32 @@ namespace FileExplorerApp
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBox2.SelectedItem != null)
+            {
+                // Get the selected item (file or folder) from listBox2
+                string selectedItem = listBox2.SelectedItem.ToString();
+
+                // Get the full path of the selected item in listBox2
+                string selectedPath = Path.Combine(listBox2.Tag.ToString(), selectedItem);
+
+                // Display the selected path in the label
+                labelFilePath.Text = $"Selected Path: {selectedPath}";
+            }
+            else
+            {
+                // If no item is selected, clear the label text
+                labelFilePath.Text = "Selected Path: ";
+            }
+        }
+
+
+        private void labelFilePath_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
